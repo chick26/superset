@@ -85,6 +85,7 @@ import getBootstrapData from 'src/utils/getBootstrapData';
 import { isEmpty } from 'lodash';
 import TemplateParamsEditor from '../TemplateParamsEditor';
 import SouthPane from '../SouthPane';
+import GPTInput from '../GptEditor';
 import SaveQuery from '../SaveQuery';
 import ScheduleQueryButton from '../ScheduleQueryButton';
 import EstimateQueryCostButton from '../EstimateQueryCostButton';
@@ -188,6 +189,10 @@ const StyledSqlEditor = styled.div`
       width: 3%;
       margin: ${SQL_EDITOR_GUTTER_MARGIN}px 47%;
     }
+    
+    .gpt-pane {
+      height: initial !important;
+    }
 
     .gutter.gutter-vertical {
       cursor: row-resize;
@@ -252,6 +257,7 @@ const SqlEditor = ({
 
   const sqlEditorRef = useRef(null);
   const northPaneRef = useRef(null);
+  const gptPaneRef = useRef(null);
 
   const startQuery = useCallback(
     (ctasArg = false, ctas_method = CtasEnum.TABLE) => {
@@ -286,7 +292,7 @@ const SqlEditor = ({
       startQuery();
     }
   };
-
+  
   useEffect(() => {
     if (autorun) {
       setAutorun(false);
@@ -672,6 +678,12 @@ const SqlEditor = ({
         onDragStart={onResizeStart}
         onDragEnd={onResizeEnd}
       >
+        <div ref={gptPaneRef} className="gpt-pane">
+          <GPTInput
+            queryEditorId={queryEditor.id}
+            database={database}
+          />
+        </div>
         <div ref={northPaneRef} className="north-pane">
           <AceEditorWrapper
             autocomplete={autocompleteEnabled}

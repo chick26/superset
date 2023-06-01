@@ -166,6 +166,7 @@
     "mustache": "^2.2.1",
     "polished": "^3.7.2",
     "prop-types": "^15.7.2",
+    "puppeteer": "^20.4.0",
     "query-string": "^6.13.7",
     "re-resizable": "^6.6.1",
     "react": "^16.13.1",

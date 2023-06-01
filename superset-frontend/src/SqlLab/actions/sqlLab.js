@@ -1555,3 +1555,30 @@ export function createCtasDatasource(vizOptions) {
       });
   };
 }
+
+// add gpt generate api
+export function generateGptQuery(query) {
+  const postPayload = {
+    client_id: query.id,
+    database_id: query.dbId,
+    json: true,
+    schema: query.schema,
+    prompt: query.prompt,
+    sql_editor_id: query.sqlEditorId,
+    tab: query.tab,
+  };
+
+  return SupersetClient.post({
+    endpoint: `/api/v1/openai/generate/`,
+    jsonPayload: postPayload,
+    headers: { 'Content-Type': 'application/json' },
+    parseMethod: 'json-bigint',
+  })
+    .then(({ json }) => {
+      return Promise.resolve(json.choices[0].message.content);
+    })
+    .catch(() => {
+      const errorMsg = t('An error occurred while generate SQL');
+      return Promise.reject(new Error(errorMsg));
+    })
+}
